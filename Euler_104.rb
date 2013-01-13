@@ -15,10 +15,26 @@ class Fibonacci
   end
   
   def fib(n)
-    unless @fib.include?(n)
-      @fib[n] = fib(n-1) + fib(n-2)
+    return @fib[n] if @fib.include?(n)
+    (3..n).each do |x|  
+      @fib[x] = @fib[x-1] + @fib[x-2] 
     end
     return @fib[n]
+  end  
+end
+
+class Fib_new
+  def initialize
+    @n1, @n2 = 1, 1
+    @current = 0
+    @index = 2
+  end
+  
+  def next
+    @current = @n1 + @n2
+    @n1, @n2 = @current, @n1
+    @index += 1
+    return @current, @index  
   end  
 end
 
@@ -34,19 +50,14 @@ class Integer
   def last_pan?
     self.to_s[-9..-1].to_i.is_pan?
   end
-
 end
 
-class Euler104
- 
-  def initialize(max)
-    @max = max
-  end
-  
+class Euler104 
   def get_res_fib
-    fib = Fibonacci.new
-    fib.each_with_index(@max) do |f,i|
-      return i + 1 if f.first_pan? && f.last_pan?
+    fib = Fib_new.new
+    while f = fib.next
+      puts f[1] if f[1] % 10_000 == 0
+      return f[1] if f[0].first_pan? && f[0].last_pan?
     end
     return false
   end  
